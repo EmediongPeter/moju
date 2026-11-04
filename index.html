@@ -1,0 +1,233 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Moju · your phone is a live camera</title>
+<meta name="description" content="Turn any Android phone into a smooth live camera for OBS, vMix and YouTube. Moju finds your PC by itself.">
+<meta property="og:title" content="Moju · your phone is a live camera">
+<meta property="og:description" content="Smooth live video from any Android phone to OBS, vMix and YouTube. No cables, no IP addresses.">
+<meta name="theme-color" content="#0F1020">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Moju brand tokens: see the Moju Brand Book. Single dark "studio night" look by design. */
+:root {
+  --night: #0F1020; --stage: #191A2E; --rail: #26283F; --mist: #A7A9C6; --paper: #F4F3FF;
+  --lilac: #8C7BFF; --marigold: #FFC145; --live: #FF4D5E; --good: #3DDC97;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--night); }
+body {
+  margin: 0; background: var(--night); color: var(--paper); font: 500 17px/1.6 var(--body);
+  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1120px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; }
+p { margin: 0; color: var(--mist); max-width: 60ch; }
+a { color: var(--lilac); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--marigold); outline-offset: 3px; }
+
+/* Nav */
+nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--paper); font: 800 26px/1 var(--display); letter-spacing: -0.03em; }
+.brand svg { width: 36px; height: 36px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; padding: 14px 24px;
+  font: 700 16px/1 var(--body); text-decoration: none; border: 0; cursor: pointer;
+}
+.btn.primary { background: var(--lilac); color: #fff; }
+.btn.primary:hover { background: #9d8eff; }
+.btn.ghost { background: transparent; color: var(--paper); box-shadow: inset 0 0 0 1.5px var(--rail); }
+.btn.small { padding: 10px 18px; font-size: 14px; }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; padding: 40px 0 72px; }
+.hero h1 { font-size: clamp(42px, 7vw, 84px); font-weight: 800; line-height: 0.98; letter-spacing: -0.035em; }
+.hero h1 em { font-style: normal; color: var(--lilac); }
+.hero .lead { font-size: 20px; color: var(--paper); margin-top: 20px; }
+.hero .sub { margin-top: 10px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; align-items: center; }
+.fine { font-size: 13px; color: var(--mist); margin-top: 12px; }
+
+/* Phone mockup (landscape), echoing the app's camera screen. */
+.phone { aspect-ratio: 19.5 / 9; width: 100%; border-radius: 30px; background: #05050B; padding: 10px; box-shadow: 0 0 0 1px #2E3050, 0 40px 80px -30px rgba(0,0,0,0.9); }
+.scr { position: relative; height: 100%; border-radius: 21px; overflow: hidden;
+  background:
+    radial-gradient(60% 70% at 52% 38%, rgba(255,214,150,0.55), transparent 60%),
+    radial-gradient(30% 40% at 52% 52%, #6E4E3A 0 40%, transparent 41%),
+    radial-gradient(18% 22% at 52% 30%, #C79A7B 0 55%, transparent 56%),
+    linear-gradient(180deg, #2A2140 0%, #3B2A44 55%, #1B1526 56%, #120E1B 100%); }
+.pill { position: absolute; display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; background: rgba(15,16,32,0.65); font-size: clamp(9px, 1.4vw, 12px); font-weight: 600; white-space: nowrap; }
+.pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--live); }
+.go { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); width: 17%; aspect-ratio: 1; border-radius: 50%; background: var(--live); color: #fff; display: grid; place-items: center; font: 800 clamp(10px, 1.6vw, 14px) var(--display); box-shadow: 0 0 0 5px rgba(61,220,151,0.7); }
+.chips { position: absolute; left: 4%; bottom: 7%; display: flex; gap: 6px; }
+.chips span { padding: 5px 10px; border-radius: 999px; background: rgba(15,16,32,0.65); border: 1px solid rgba(244,243,255,0.15); font-size: clamp(8px, 1.3vw, 11px); font-weight: 600; }
+.chips span.lock { color: var(--marigold); border-color: var(--marigold); }
+
+/* Sections */
+section { padding: 64px 0; border-top: 1px solid var(--rail); }
+.eyebrow { font: 700 12px/1 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--lilac); margin-bottom: 14px; }
+section h2 { font-size: clamp(30px, 4.4vw, 46px); letter-spacing: -0.02em; line-height: 1.05; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
+.step, .feature { background: var(--stage); border-radius: 22px; padding: 26px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.step b { font: 800 40px/1 var(--display); color: var(--marigold); }
+.step h3, .feature h3 { font-size: 21px; }
+.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
+.feature .tag { font: 700 11px/1 var(--body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--good); }
+.works { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.works span { padding: 9px 16px; border-radius: 999px; background: var(--stage); font-weight: 600; }
+
+/* Download */
+.download { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; }
+.qr-card { background: var(--paper); color: var(--night); border-radius: 26px; padding: 22px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+#qr { width: 200px; height: 200px; display: grid; place-items: center; }
+#qr img, #qr canvas { width: 200px !important; height: 200px !important; }
+.qr-card small { font-weight: 600; font-size: 14px; }
+ol.install { margin: 24px 0 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; color: var(--paper); max-width: 62ch; }
+ol.install li::marker { color: var(--marigold); font-weight: 700; }
+.note { margin-top: 18px; padding: 16px 18px; border-radius: 16px; background: var(--stage); font-size: 15px; }
+
+/* Coming soon */
+.soon { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
+.soon .feature .tag { color: var(--marigold); }
+
+footer { padding: 40px 0 56px; border-top: 1px solid var(--rail); display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; color: var(--mist); font-size: 14px; }
+
+@media (max-width: 880px) {
+  .hero, .download { grid-template-columns: 1fr; }
+  .steps, .features, .soon { grid-template-columns: 1fr; }
+  .qr-card { justify-self: start; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .go { animation: breathe 2.4s ease-in-out infinite; }
+  @keyframes breathe { 50% { box-shadow: 0 0 0 9px rgba(61,220,151,0.35); } }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="eye" viewBox="0 0 100 100">
+      <path d="M8 52 C 26 22, 74 22, 92 52" fill="none" stroke="#8C7BFF" stroke-width="9" stroke-linecap="round"/>
+      <path d="M16 60 C 34 84, 70 84, 88 58" fill="none" stroke="#8C7BFF" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="54" cy="52" r="15" fill="#FFC145"/>
+      <circle cx="59" cy="47" r="4.5" fill="#0F1020"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#eye"/></svg>moju</a>
+    <a class="btn primary small js-download" href="#download">Download</a>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>Your phone is a <em>live camera.</em></h1>
+      <p class="lead">Send smooth, live video from any Android phone to OBS, vMix or YouTube.</p>
+      <p class="sub">Moju finds your streaming PC by itself. No cables, no IP addresses, no watermarks.</p>
+      <div class="cta">
+        <a class="btn primary js-download" href="#download">Download for Android</a>
+        <a class="btn ghost" href="#how">How it works</a>
+      </div>
+      <p class="fine js-size">Free test build · Android 6.0 or newer</p>
+    </div>
+    <div class="phone" role="img" aria-label="Moju camera screen, live, sending to vMix">
+      <div class="scr">
+        <span class="pill" style="left:4%;top:7%"><i></i>LIVE 12:04 → vMix</span>
+        <span class="pill" style="right:4%;top:7%"><i style="background:var(--good)"></i>Smooth</span>
+        <div class="go">STOP</div>
+        <div class="chips"><span>0.7×</span><span>1×</span><span>2×</span><span class="lock">Locked</span><span>Pro</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section id="how">
+    <div class="eyebrow">How it works</div>
+    <h2>Open, point, go live</h2>
+    <div class="steps">
+      <div class="step"><b>1</b><h3>Install Moju</h3><p>On any Android phone on the same Wi-Fi as your streaming PC.</p></div>
+      <div class="step"><b>2</b><h3>Pick your software</h3><p>Moju looks for OBS and vMix on the network and shows what it finds. Tap one.</p></div>
+      <div class="step"><b>3</b><h3>Tap GO</h3><p>Your camera appears in OBS or vMix, named after your phone, in about a second.</p></div>
+    </div>
+    <div class="works"><span>OBS Studio</span><span>vMix</span><span>YouTube Live</span><span>Facebook Live</span><span>Any SRT or RTMP receiver</span></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Why Moju</div>
+    <h2>Built for the moments you can't redo</h2>
+    <div class="features">
+      <div class="feature"><span class="tag">No setup</span><h3>Finds your PC by itself</h3><p>Moju adds its own camera to OBS with low-delay settings. In vMix, pick a port and go.</p></div>
+      <div class="feature"><span class="tag">Smooth</span><h3>Softer, never broken</h3><p>When Wi-Fi dips, Moju eases the quality within a second instead of letting the picture crack.</p></div>
+      <div class="feature"><span class="tag">Reliable</span><h3>Comes back by itself</h3><p>Lose the network for a moment and Moju reconnects on its own. No one has to touch the phone.</p></div>
+      <div class="feature"><span class="tag">Pro camera</span><h3>Real camera control</h3><p>Ultra-wide to 2×, one-tap lock for exposure, focus and white balance, ISO and shutter. 1/50 stops flicker under mains lights.</p></div>
+      <div class="feature"><span class="tag">Long services</span><h3>Runs for hours</h3><p>Dim the screen and keep streaming. Battery and heat are always one tap away.</p></div>
+      <div class="feature"><span class="tag">Your look</span><h3>Colour that streams</h3><p>Vivid, Warm, Cool, Flat or Mono, applied before the video leaves the phone.</p></div>
+    </div>
+  </section>
+
+  <section id="download">
+    <div class="download">
+      <div>
+        <div class="eyebrow">Download</div>
+        <h2>Get Moju on your phone</h2>
+        <p style="margin-top:12px">On your phone, tap the button. On a computer, scan the code with your phone's camera.</p>
+        <div class="cta"><a class="btn primary js-download" href="#">Download Moju for Android</a></div>
+        <p class="fine js-size">Free test build · Android 6.0 or newer</p>
+        <ol class="install">
+          <li>Tap <b>Download</b>. If Chrome says the file might be harmful, tap <b>Download anyway</b>.</li>
+          <li>Open the downloaded file. If Android asks, allow installs from this source, then go back.</li>
+          <li>Tap <b>Install</b>. If Play Protect asks, tap <b>More details</b>, then <b>Install anyway</b>.</li>
+          <li>Open Moju, choose <b>Stream to my PC</b>, and allow the camera and microphone.</li>
+        </ol>
+        <p class="note">Why the warnings? Moju is in testing and isn't on the Play Store yet, so Android asks you to confirm. It goes away once Moju is published there.</p>
+      </div>
+      <div class="qr-card">
+        <div id="qr" role="img" aria-label="QR code to download Moju"></div>
+        <small>Scan to download</small>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Coming soon</div>
+    <h2>More than one angle</h2>
+    <div class="soon">
+      <div class="feature"><span class="tag">Create</span><h3>Your pocket studio</h3><p>Phones overhead and at the side, your laptop in front. Moju switches between them on your timing and records the finished cut.</p></div>
+      <div class="feature"><span class="tag">Host an event</span><h3>Every angle, to everyone</h3><p>Guests join as cameras with a link. One phone directs, and family abroad watch live from WhatsApp.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Moju by FutureLabs</span>
+    <span>NDI® is a registered trademark of Vizrt NDI AB.</span>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  // The one setting to change: where the APK lives. GitHub's "latest" link always serves the newest release.
+  const DOWNLOAD_URL = "https://github.com/EmediongPeter/moju/releases/latest/download/Moju.apk";
+
+  document.querySelectorAll(".js-download").forEach(a => {
+    a.href = DOWNLOAD_URL;
+    a.setAttribute("download", "Moju.apk");
+  });
+  try {
+    new QRCode(document.getElementById("qr"), {
+      text: DOWNLOAD_URL, width: 200, height: 200, colorDark: "#0F1020", colorLight: "#F4F3FF",
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  } catch (e) {
+    document.getElementById("qr").textContent = "Open this page on your phone to download.";
+  }
+</script>
+</body>
+</html>
