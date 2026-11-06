@@ -53,6 +53,8 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 .hero .lead { font-size: 20px; color: var(--paper); margin-top: 20px; }
 .hero .sub { margin-top: 10px; }
 .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; align-items: center; }
+.beta { font: 700 11px/1 var(--body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--night); background: var(--marigold); padding: 5px 8px; border-radius: 999px; margin-left: 2px; }
+footer a { color: var(--paper); }
 .fine { font-size: 13px; color: var(--mist); margin-top: 12px; }
 
 /* Phone mockup (landscape), echoing the app's camera screen. */
@@ -124,7 +126,7 @@ footer { padding: 40px 0 56px; border-top: 1px solid var(--rail); display: flex;
 
 <div class="wrap">
   <nav>
-    <a class="brand" href="#"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#eye"/></svg>moju</a>
+    <a class="brand" href="#"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#eye"/></svg>moju<span class="beta">Beta</span></a>
     <a class="btn primary small js-download" href="#download">Download</a>
   </nav>
 
@@ -137,7 +139,7 @@ footer { padding: 40px 0 56px; border-top: 1px solid var(--rail); display: flex;
         <a class="btn primary js-download" href="#download">Download for Android</a>
         <a class="btn ghost" href="#how">How it works</a>
       </div>
-      <p class="fine js-size">Free test build · Android 6.0 or newer</p>
+      <p class="fine js-size">Free beta · Version 0.1.0 · Android 6.0 or newer</p>
     </div>
     <div class="phone" role="img" aria-label="Moju camera screen, live, sending to vMix">
       <div class="scr">
@@ -180,14 +182,14 @@ footer { padding: 40px 0 56px; border-top: 1px solid var(--rail); display: flex;
         <h2>Get Moju on your phone</h2>
         <p style="margin-top:12px">On your phone, tap the button. On a computer, scan the code with your phone's camera.</p>
         <div class="cta"><a class="btn primary js-download" href="#">Download Moju for Android</a></div>
-        <p class="fine js-size">Free test build · Android 6.0 or newer</p>
+        <p class="fine js-size">Free beta · Version 0.1.0 · Android 6.0 or newer</p>
         <ol class="install">
           <li>Tap <b>Download</b>. If Chrome says the file might be harmful, tap <b>Download anyway</b>.</li>
           <li>Open the downloaded file. If Android asks, allow installs from this source, then go back.</li>
           <li>Tap <b>Install</b>. If Play Protect asks, tap <b>More details</b>, then <b>Install anyway</b>.</li>
           <li>Open Moju, choose <b>Stream to my PC</b>, and allow the camera and microphone.</li>
         </ol>
-        <p class="note">Why the warnings? Moju is in testing and isn't on the Play Store yet, so Android asks you to confirm. It goes away once Moju is published there.</p>
+        <p class="note"><b>Moju is in beta.</b> It works, but we're still fixing things, so test it before you rely on it for a live event. Why the warnings? Moju isn't on the Play Store yet, so Android asks you to confirm. They go away once Moju is published there.</p>
       </div>
       <div class="qr-card">
         <div id="qr" role="img" aria-label="QR code to download Moju"></div>
@@ -206,7 +208,7 @@ footer { padding: 40px 0 56px; border-top: 1px solid var(--rail); display: flex;
   </section>
 
   <footer>
-    <span>Moju by FutureLabs</span>
+    <span>Moju is a <a href="https://futurelabs.africa/studio#moju">FutureLabs Studio</a> product</span>
     <span>NDI® is a registered trademark of Vizrt NDI AB.</span>
   </footer>
 </div>
