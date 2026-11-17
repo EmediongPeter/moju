@@ -1,5 +1,3 @@
-﻿# Moju
+# Moju (moved)
 
-Turn your phone into a live camera for OBS, vMix and YouTube.
-
-Download: https://emediongpeter.github.io/moju/
+Moju now lives at https://futurelabs.africa/moju, with downloads from https://github.com/FutureLabss/moju/releases.
